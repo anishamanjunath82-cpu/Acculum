@@ -1,85 +1,163 @@
-# AI Usage Disclosure
+# AI Usage Disclosure — Acculum
 
-[← Back to README](./README.md)
+## Project
 
-> AI tools are **100% permitted** at HackMysuru 1.0. Disclosing them is **mandatory**.
-> Using AI never costs you points. Not being able to explain code you submitted does.
-> Reviewers check this file against your commit history and the AI segment of your video.
+Acculum is an AI-assisted personalized learning platform built for **HackMysuru Problem Statement 1 — Personalized Learning**.
 
-<!--
-This file covers two different things. Keep them separate:
-  Section 1: AI tools YOU used while building (ChatGPT, Copilot, Cursor, Claude, v0, ...)
-  Section 3: AI models your PRODUCT uses at runtime (vision model, LLM classifier, ...)
-If you used no AI at all, say so explicitly in the Summary and delete the rest.
--->
+AI-related functionality is used in two main areas:
 
----
+1. Student learning assistance and personalization
+2. Facilitator learning-signal analysis and intervention support
 
-## Summary
+## AI Used During Development
 
-| Question | Answer |
-|---|---|
-| Did we use AI tools during development? | `<Yes / No>` |
-| Does our product use AI/ML at runtime? | `<Yes / No>` |
-| Roughly how much of the code was AI-assisted? | `<e.g. ~40% of frontend, ~15% of backend, 0% of routing logic>` |
-| Can every team member explain the AI-assisted code? | `<Yes>` |
+AI-assisted development was used for:
 
----
+- Exploring implementation approaches
+- Generating and refining application boilerplate
+- Debugging TypeScript and application issues
+- Reviewing component and API structure
+- Drafting and refining documentation
+- Exploring edge cases
 
-## 1. AI Tools Used During Development
+AI suggestions were reviewed and adapted by the development team.
 
-| Tool | Model / plan | Used by | What we used it for |
-|---|---|---|---|
-| `<ChatGPT>` | `<GPT-x, free>` | `<@handle>` | `<Debugging CORS errors, regex for phone validation>` |
-| `<GitHub Copilot>` | `<...>` | `<@handle, @handle>` | `<Autocomplete in React components>` |
-| `<Cursor / Claude / v0 / ...>` | `<...>` | `<...>` | `<...>` |
+## Runtime AI
 
-## 2. Where AI Helped in the Codebase
+The student AI companion is implemented in:
 
-| Area / file | Level of AI help | What a human did |
-|---|---|---|
-| `src/<frontend/components/>` | `<High: scaffolded by v0>` | `<Rewrote state handling, added offline queue>` |
-| `src/<api/routes.py>` | `<Medium: Copilot suggestions>` | `<Designed endpoints, wrote validation>` |
-| `src/<routing/engine.py>` | `<None>` | `<Written by hand, core logic>` |
-| `<README / docs>` | `<...>` | `<...>` |
+`src/services/ai/index.ts`
 
-**Commit convention (optional, recommended):** commits containing substantial AI-generated code are tagged `[ai]` in the message, e.g. `feat: ward status page [ai]`.
+The API route is:
 
-## 3. AI Inside the Product (runtime)
+`src/app/api/ai/chat/route.ts`
 
-<!-- Delete this section if your product uses no AI/ML at runtime. -->
+The current runtime implementation uses **deterministic, context-aware responses** rather than a live external LLM API.
 
-| Model / API | What it does in our product | Hosted where | Trained / fine-tuned by us? |
-|---|---|---|---|
-| `<YOLOv8n>` | `<Detects overflowing bins in photos>` | `<On server / on device>` | `<Fine-tuned on 300 labelled images>` |
-| `<LLM API>` | `<Classifies complaint text into issue types>` | `<Provider API>` | `<No, prompt only>` |
+It can use available context such as:
 
-- **Accuracy we measured:** `<e.g. 82% precision on 50 held-out images>` (or "not measured yet")
-- **What happens when the model is wrong:** `<fallback, human review, confidence threshold>`
-- **Does it work offline?** `<...>`
-- **Citizen data sent to third parties:** `<none / what, and why>`
-- **Cost at city scale:** `<rough estimate, or "unknown">`
+- Student interests
+- Language/context
+- Current learning topic
+- User questions
+- Image/file context where available
 
-## 4. Key Prompts (optional, max 5)
+## Current AI Capabilities
 
-<!-- Only prompts that shaped a real design or code decision. Not a full chat log. -->
+The implementation includes contextual handling for:
 
-| # | Prompt (short) | What we kept | What we changed or rejected |
-|---|---|---|---|
-| 1 | `<"Suggest a schema for complaints with geo-dedup">` | `<Table layout>` | `<Replaced lat/lng floats with PostGIS geography>` |
+- Fractions
+- Percentages
+- Probability
+- Electric current
+- Photosynthesis
+- Speed and motion
+- Image/file context
+- Greetings
+- General fallback questions
 
-## 5. How We Verified AI Output
+The system can adapt examples to learner interests, such as using cricket-related examples when cricket is the student's interest.
 
-- `<e.g. Every AI-generated function was run against our seed data before merging>`
-- `<e.g. Rejected suggestions that stored photos in the database as base64>`
-- `<Example of a bug an AI tool introduced and how we caught it>`
+## Personalization Engine
 
-## 6. What We Deliberately Did *Not* Use AI For
+Personalization is implemented in:
 
-- `<e.g. The Decision Log — written by the team in our own words>`
-- `<e.g. The jurisdiction routing rules>`
+`src/lib/ai/personalization.ts`
 
----
+It supports:
 
-**Declaration:** We confirm this disclosure is complete, and every team member can explain the code listed above.
-**Signed:** `<Team Leader name>` on behalf of `<Team Name>` · `<date>`
+- Interest-based examples
+- Performance-based recommendations
+- Score announcements
+- Confidence/performance mismatch detection
+- Hidden-strength detection
+- Learning-format recommendations
+
+Supported interests include:
+
+**Cricket, Music, Gaming, Robotics, Football, Art, Science, Reading and Technology.**
+
+Performance recommendations currently follow:
+
+- **85%+** → Progress / next topic
+- **50–84%** → Targeted practice
+- **Below 50%** → Revision / reinforcement
+
+## Facilitator Signal Engine
+
+The facilitator application uses a learning-signal engine based on:
+
+- Quiz performance
+- Repeated incorrect answers
+- Repeated attempts
+- Hints and help-seeking
+- AI companion activity
+- Lesson completion
+- Skipped or incomplete lessons
+- Engagement patterns
+- Confidence/performance mismatch
+- High or low performance
+
+The current signal engine is **rule-based and deterministic**.
+
+It generates intervention recommendations for facilitator decision support.
+
+The facilitator remains responsible for deciding whether and how to intervene.
+
+## External LLM Usage
+
+The current runtime does **not** depend on an external LLM API.
+
+The project contains an architectural integration point for future external AI integration, but the external LLM call is not active in the current runtime request path.
+
+## Data and Privacy
+
+Because the current runtime AI is deterministic, student AI requests do not need to be sent to an external LLM provider.
+
+If a future version enables an external model, student information should be minimized and the implementation should document:
+
+- What information is transmitted
+- Which provider/model receives it
+- Retention behavior
+- Privacy controls
+- Security measures
+- Cost controls
+
+## Accuracy and Verification
+
+The current AI layer is intentionally bounded and deterministic.
+
+This provides predictable MVP behavior but does not provide the broad knowledge coverage of a general-purpose LLM.
+
+Facilitator signals are intended as decision-support signals rather than automatic educational decisions.
+
+## Fallback
+
+The deterministic AI response layer does not require a remote LLM provider.
+
+The rest of the application still requires its normal application runtime and database.
+
+## What AI Was Not Responsible For
+
+Core product decisions remain implemented as application logic, including:
+
+- Student/facilitator workflow
+- Performance thresholds
+- Learning-signal rules
+- Intervention mapping
+- Reassessment flow
+- Database/application structure
+- Product UI structure
+
+## Future AI Direction
+
+Future versions can introduce a live LLM for richer:
+
+- Explanations
+- Socratic questioning
+- Personalized examples
+- Multi-step tutoring
+- Adaptive practice generation
+- Natural-language facilitator summaries
+
+Any future integration should be evaluated for educational accuracy, privacy, reliability, latency and cost.
