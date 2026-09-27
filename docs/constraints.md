@@ -1,51 +1,109 @@
-# The Five Hard Constraints
+# Acculum — Constraints & Engineering Decisions
 
-[← Back to README](../README.md)
+## MVP Scope
 
-<!-- The problem statement names five constraints that decide whether a solution would hold up
-in Mysuru. Be honest: ✅ handled · ⚠️ partial · ❌ not yet. Timestamps point to the video. -->
+Acculum is a HackMysuru prototype focused on demonstrating the personalized-learning workflow.
 
-| # | Constraint | Status | Video |
-|---|---|---|---|
-| 1 | Fake, spam and harassment reports | `<✅/⚠️/❌>` | `<mm:ss>` |
-| 2 | Unclear jurisdiction | `<...>` | `<...>` |
-| 3 | Prioritisation beyond "most votes" | `<...>` | `<...>` |
-| 4 | Bad input (duplicate, fake photo, wrong location, abuse) | `<...>` | `<...>` |
-| 5 | Works without internet | `<...>` | `<...>` |
+The MVP prioritizes:
 
----
+- Student personalization
+- Learning progress
+- AI-assisted learning support
+- Learning-signal detection
+- Facilitator intervention support
+- Reassessment
 
-## 1. Fake, spam and harassment reports
+## Current AI Constraint
 
-- **Approach:** `<signals used, thresholds, human review?>`
-- **Anonymity trade-off:** `<how you keep honest anonymous reports while limiting abuse>`
-- **Code:** `src/<...>`
+The student AI companion currently uses deterministic, context-aware logic.
 
-## 2. Unclear jurisdiction
+A live external LLM is not required for the current runtime.
 
-- **Approach:** `<boundary data, buffer zones, confidence score, shared queue, escalation>`
-- **What happens in a boundary case:** `<...>`
-- **Code:** `src/<...>`
+This was chosen to keep the MVP:
 
-## 3. Prioritisation
+- Predictable
+- Explainable
+- Demonstrable
+- Less dependent on external services
 
-- **Formula / rules:** `<e.g. severity × sensitive-location weight × unique reporters × age>`
-- **Why not simply "most votes":** `<...>`
-- **Code:** `src/<...>`
+## Personalization Constraint
 
-## 4. Bad input
+Personalization currently uses explicit interests and measurable learning signals.
 
-| Input | What our system does |
-|---|---|
-| Duplicate report | `<...>` |
-| Fake / unrelated photo | `<...>` |
-| Wrong or impossible location | `<...>` |
-| Abusive message | `<...>` |
-| `<Anything else you tested>` | `<...>` |
+It is not intended to model every aspect of a student's behavior.
 
-## 5. Offline operation
+Supported interests include:
 
-- **What works offline:** `<...>`
-- **How it syncs:** `<queue, retry, conflict handling>`
-- **What does not work offline:** `<...>`
-- **How to test:** see [setup.md](./setup.md#testing-offline-mode)
+- Cricket
+- Music
+- Gaming
+- Robotics
+- Football
+- Art
+- Science
+- Reading
+- Technology
+
+## Signal Engine Constraint
+
+The facilitator learning-signal engine is currently rule-based.
+
+This makes the signals transparent, but thresholds and rules require validation with larger real-world learning datasets.
+
+## Database Constraint
+
+The student application currently uses SQLite.
+
+This is appropriate for the prototype but would need a production-grade data architecture for:
+
+- Larger scale
+- Concurrent users
+- Distributed deployment
+- Advanced analytics
+
+## Application Architecture Constraint
+
+The student and facilitator applications currently use separate application/data layers.
+
+A future production architecture should consider:
+
+- Unified authentication
+- Shared data model
+- Centralized authorization
+- Production database infrastructure
+- Shared analytics/event pipeline
+
+## Security Constraint
+
+The current project is an MVP and should not be treated as production-ready authentication or authorization infrastructure.
+
+Before production deployment, the system would require:
+
+- Hardened authentication
+- Strong authorization boundaries
+- Secure secret management
+- Input validation
+- Rate limiting
+- Audit logging
+- Secure deployment configuration
+
+## External AI Constraint
+
+If a live external LLM is introduced, the system will need:
+
+- Secure API-key management
+- Privacy controls
+- Data minimization
+- Cost controls
+- Rate limiting
+- Output validation
+- Model evaluation
+- Fallback behavior
+
+## Product Constraint
+
+Acculum provides facilitator decision support.
+
+The system does not automatically determine what a facilitator must do.
+
+The facilitator remains responsible for interpreting learning signals and choosing the appropriate intervention.

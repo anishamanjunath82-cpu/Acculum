@@ -1,60 +1,20 @@
-# Setup & Run Instructions
+# Acculum Setup Guide
 
-[← Back to README](../README.md)
+## Requirements
 
-<!-- A reviewer should get this running in under 10 minutes if the live link is down. -->
+For the student application:
 
-## Prerequisites
+- Node.js
+- npm
 
-| Tool | Version |
-|---|---|
-| `<Node.js / Python / Docker>` | `<20.x / 3.11 / 24+>` |
+For the facilitator application:
 
-## 1. Clone
+- Node.js
+- npm
 
-```bash
-git clone <repo-url>
-cd <repo>
-```
+## Student Application
 
-## 2. Environment Variables
+From the project root:
 
 ```bash
-cp .env.example .env
-```
-
-| Variable | Required | Example | Purpose |
-|---|---|---|---|
-| `DATABASE_URL` | Yes | `<...>` | `<...>` |
-| `<API_KEY>` | `<No>` | `<...>` | `<...>` |
-
-> Never commit real secrets. Commit only `.env.example`.
-
-## 3. Install & Seed Demo Data
-
-```bash
-<install command>
-<migration command>
-<seed command>          # loads <N> sample complaints across <N> wards
-```
-
-## 4. Run
-
-```bash
-<run command>
-```
-
-Open `http://localhost:<port>`. Test accounts are listed in [resource.md](../resource.md#5-live-mvp).
-
-## Testing Offline Mode
-
-1. `<Open the app and log in>`
-2. `<Chrome DevTools → Network → Offline, or phone airplane mode>`
-3. `<File a complaint → it shows "queued">`
-4. `<Go back online → it syncs and shows "submitted">`
-
-## Troubleshooting
-
-| Problem | Fix |
-|---|---|
-| `<Port already in use>` | `<...>` |
+npm install

@@ -1,75 +1,87 @@
-# Architecture
+# Acculum Architecture
 
-[← Back to README](../README.md)
+## Overview
 
-## System Diagram
+Acculum is a personalized learning platform with two application experiences:
 
-<!-- Required: a diagram, not just text. Mermaid renders natively on GitHub.
-An exported PNG under docs/images/ is also fine. -->
+1. Student Platform
+2. Facilitator Dashboard
 
-```mermaid
-flowchart LR
-    A[Citizen App<br/>PWA · offline queue] -->|sync when online| B[API Server]
-    W[Field Worker App] --> B
-    B --> C[(Database)]
-    B --> D[Routing / Scoring Service]
-    D --> E[(Ward & Panchayat<br/>Boundary Data)]
-    B --> F[Public Status Dashboard]
-```
+The system is designed around a continuous learning loop:
 
-## Request Walkthrough
+**Student activity → Learning data → Signal detection → Facilitator insight → Intervention → Reassessment**
 
-<!-- Trace ONE real request end-to-end, e.g. "citizen files a complaint". -->
+## Student Application
 
-1. `<Client captures photo + GPS, stores in local queue>`
-2. `<On reconnect, POST /api/complaints>`
-3. `<Server checks duplicates within 50 m / 7 days>`
-4. `<Routing service resolves jurisdiction + confidence>`
-5. `<Complaint lands in the right queue; citizen sees status>`
+The student application is built with:
 
-## Components
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- SQLite
+- Better-SQLite3
+- Zustand
+- SWR
+- Recharts
+- Framer Motion
+- Zod
 
-| Component | Responsibility | Tech | Code location |
-|---|---|---|---|
-| `<Client>` | `<...>` | `<...>` | `src/<...>` |
-| `<API>` | `<...>` | `<...>` | `src/<...>` |
-| `<Data store>` | `<...>` | `<...>` | `src/<...>` |
-| `<ML / rules engine>` | `<...>` | `<...>` | `src/<...>` |
+### Main capabilities
 
-## Data Model
+- Subjects
+- Courses
+- Lessons
+- Quizzes
+- Assignments
+- Progress tracking
+- AI learning companion
+- Classroom/social features
+- Rewards
+- Daily GK
+- Career exploration
 
-```mermaid
-erDiagram
-    COMPLAINT ||--o{ STATUS_UPDATE : has
-    COMPLAINT }o--|| JURISDICTION : routed_to
-    COMPLAINT }o--o| HOTSPOT : grouped_into
-    USER ||--o{ COMPLAINT : files
-```
+## Personalization Layer
 
-| Entity | Key fields | Notes |
-|---|---|---|
-| `<Complaint>` | `<id, type, lat, lng, photo_url, trust_score, status>` | `<...>` |
-| `<...>` | `<...>` | `<...>` |
+Personalization is implemented in:
 
-## Key APIs
+`src/lib/ai/personalization.ts`
 
-| Method | Endpoint | Purpose | Auth |
-|---|---|---|---|
-| `POST` | `/api/complaints` | `<...>` | `<anonymous / token>` |
-| `GET` | `/api/wards/:id/status` | `<...>` | `<public>` |
+It uses:
 
-## Tech Stack
+- Student interests
+- Performance
+- Learning signals
 
-| Layer | Choice | Why this over alternatives |
-|---|---|---|
-| Frontend | `<...>` | `<...>` |
-| Backend | `<...>` | `<...>` |
-| Database | `<...>` | `<...>` |
-| ML / AI | `<...>` (details in [ai.md](../ai.md#3-ai-inside-the-product-runtime)) | `<...>` |
-| Hosting | `<...>` | `<...>` |
+Supported interests include:
 
-## Data Sources
+**Cricket, Music, Gaming, Robotics, Football, Art, Science, Reading and Technology.**
 
-| Dataset | Source & licence | Real or synthetic | Used for |
-|---|---|---|---|
-| `<Ward boundaries>` | `<...>` | `<...>` | `<...>` |
+Performance currently influences whether the learner should progress, practice or revise.
+
+## AI Service
+
+The student AI service is:
+
+`src/services/ai/index.ts`
+
+The API route is:
+
+`src/app/api/ai/chat/route.ts`
+
+The current runtime AI is deterministic and context-aware.
+
+It does not currently depend on a live external LLM.
+
+## Facilitator Application
+
+The facilitator dashboard is under:
+
+`facilitator/`
+
+It consists of:
+
+```text
+facilitator/
+├── client/
+└── server/
